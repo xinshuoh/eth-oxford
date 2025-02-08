@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Debate {
+  topic: string;
+  summary: string;
 }
 
-export default App
+function App() {
+  const [debates, setDebates] = useState<Debate[]>([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/debates/")
+      .then((response) => setDebates(response.data.debates))
+      .catch((error) => console.error("Error fetching debates:", error));
+  }, []);
+
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">Crypto Twitter Debate Analyzer</h1>
+      <div className="mt-4">
+        {debates.length === 0 ? (
+          <p>No debates found.</p>
+        ) : (
+          debates.map((debate, index) => (
+            <div key={index} className="border p-4 my-2 rounded">
+              <h2 className="font-semibold">{debate.topic}</h2>
+              <p>{debate.summary}</p>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
