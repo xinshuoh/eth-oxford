@@ -5,12 +5,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def fetch_tweets():
+def fetch_tweets(query: str):
     API_URL = "https://apis.datura.ai/twitter"
     API_KEY = os.getenv("DATURA_API_KEY")
     if not API_KEY:
         raise ValueError("API_KEY is missing. Ensure it's set in the .env file.")
-    payload = {"query": "crypto"}
+    payload = {"query": query}
     headers = {
         "Authorization": API_KEY,
         "Content-Type": "application/json",

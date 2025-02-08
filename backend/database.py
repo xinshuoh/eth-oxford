@@ -59,3 +59,21 @@ def get_stored_tweets():
     tweets = cursor.fetchall()
     conn.close()
     return [{"user": row[0], "text": row[1]} for row in tweets]
+
+
+def clear_databases():
+    # Connect to debates database and clear data
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM debates")
+    conn.commit()
+    conn.close()
+
+    # Connect to tweets database and clear data
+    conn = sqlite3.connect(TWEETS_DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM tweets")
+    conn.commit()
+    conn.close()
+
+    print("Databases cleared.")

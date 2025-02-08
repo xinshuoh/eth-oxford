@@ -5,7 +5,14 @@ from typing import List
 import sqlite3
 import json
 from debate_analysis import detect_debates
-from database import init_db, store_tweets, get_stored_tweets, DB_FILE, TWEETS_DB_FILE
+from database import (
+    init_db,
+    store_tweets,
+    get_stored_tweets,
+    clear_databases,
+    DB_FILE,
+    TWEETS_DB_FILE,
+)
 from nlp import analyze_tweets
 from twitter_api import fetch_tweets
 import uvicorn
@@ -18,6 +25,7 @@ load_dotenv()
 async def lifespan(app: FastAPI):
     init_db()
     yield
+    clear_databases()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -66,10 +74,10 @@ def get_debates():
 
 
 @app.get("/fetch")
-def fetch_and_store():
-    tweets = fetch_tweets()
+def fetch_and_store(query: str = "crypto"):
+    tweets = fetch_tweets(query)
     store_tweets(tweets)
-    return {"message": "Tweets fetched and stored"}
+    return {"message": f"Tweets for query: '{query}' fetched and stored"}
 
 
 @app.get("/tweets")
