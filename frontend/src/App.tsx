@@ -10,7 +10,8 @@ function App() {
   const [debates, setDebates] = useState<Debate[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/debates/")
+    axios
+      .get("http://localhost:8000/debates/")
       .then((response) => setDebates(response.data.debates))
       .catch((error) => console.error("Error fetching debates:", error));
   }, []);
