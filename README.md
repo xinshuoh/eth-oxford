@@ -1,12 +1,14 @@
 # **CryptX: AI-Powered Crypto Twitter Debate Analyzer**  
 
-![CryptX UI Preview](frontend/public/screenshot.jpg)
+![CryptX icon](frontend/public/icon.jpg)
+
 
 🚀 **CryptX** is an **AI-driven debate analysis platform** that tracks, analyzes, and summarizes **Crypto Twitter discussions**. Using **machine learning, sentiment analysis, and NLP**, CryptX provides structured insights into key debates, helping users navigate the **fast-moving crypto landscape**.
 
 
 
 ## **📌 Features**  
+![CryptX UI Preview](frontend/public/screenshot.jpg)
 
 ✅ **Real-Time Twitter Data Retrieval**  
 - Fetches tweets using the **Datura AI API**, tracking **debates and conflicts**.  
