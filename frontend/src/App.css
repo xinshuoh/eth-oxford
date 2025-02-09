@@ -40,3 +40,92 @@
 .read-the-docs {
   color: #888;
 }
+
+.p-4 {
+  padding: 1rem;
+  background-color: #f0f0f0;
+}
+
+.my-2 {
+  margin: 0.5rem;
+}
+
+/* General App Styling */
+.app-container {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+  text-align: center;
+  min-height: 100vh;
+}
+
+/* Header */
+.header-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* No debates found message */
+.no-debates {
+  font-size: 1.2rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Debate Cards Container */
+.debates-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Individual Debate Card */
+.debate-card {
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  width: 350px;
+  text-align: left;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.debate-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Debate Title */
+.debate-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1d4ed8;
+  margin-bottom: 10px;
+}
+
+/* Debate Summary */
+.debate-summary {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Read More Button */
+.read-more-btn {
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.read-more-btn:hover {
+  background: #153aa0;
+}

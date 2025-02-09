@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "./App.css";
 
-interface Debate {
-  topic: string;
-  summary: string;
-}
+// interface Debate {
+//   title: string;
+//   summary: string;
+// }
 
 function App() {
-  const [debates, setDebates] = useState<Debate[]>([]);
+  const [debates, setDebates] = useState<[]>([]);
 
   useEffect(() => {
     axios
@@ -17,16 +18,18 @@ function App() {
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Crypto Twitter Debate Analyzer</h1>
-      <div className="mt-4">
+    <div className="app-container">
+      <h1 className="header-title">Crypto Twitter Debate Analyzer</h1>
+
+      <div className="debates-container">
         {debates.length === 0 ? (
-          <p>No debates found.</p>
+          <p className="no-debates">No debates found. 📭</p>
         ) : (
           debates.map((debate, index) => (
-            <div key={index} className="border p-4 my-2 rounded">
-              <h2 className="font-semibold">{debate.topic}</h2>
-              <p>{debate.summary}</p>
+            <div key={index} className="debate-card">
+              <h2 className="debate-title">📢 {debate[1]}</h2>
+              <p className="debate-summary">{debate[3]}</p>
+              <button className="read-more-btn">Read More</button>
             </div>
           ))
         )}

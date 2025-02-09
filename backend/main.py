@@ -4,8 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 import sqlite3
 import json
-from debate_analysis import detect_debates
+from debate_analysis import get_debate_summaries
 from database import (
+    get_stored_debates,
     init_db,
     store_tweets,
     get_stored_tweets,
@@ -14,7 +15,7 @@ from database import (
     TWEETS_DB_FILE,
 )
 from nlp import analyze_tweets
-from twitter_api import fetch_tweets
+from twitter_api import fetch_related_conversations, fetch_tweets
 import uvicorn
 from dotenv import load_dotenv
 
@@ -25,7 +26,7 @@ load_dotenv()
 async def lifespan(app: FastAPI):
     init_db()
     yield
-    clear_databases()
+    # clear_databases()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -40,44 +41,25 @@ app.add_middleware(
 )
 
 
-@app.post("/analyze/")
-def analyze_debates(tweets: List[dict]):
-    detected_debates = detect_debates(tweets)
-
-    summaries = []
-    for debate in detected_debates:
-        topic = debate.get("topic", "Unknown Topic")
-        summary = debate["summary"]
-
-        conn = sqlite3.connect(DB_FILE)
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO debates (topic, tweets, summary) VALUES (?, ?, ?)",
-            (topic, json.dumps(debate["tweets"]), summary),
-        )
-        conn.commit()
-        conn.close()
-
-        summaries.append({"topic": topic, "summary": summary})
-
-    return {"debates": summaries}
-
-
 @app.get("/debates/")
 def get_debates():
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-    cursor.execute("SELECT topic, summary FROM debates")
-    debates = [{"topic": row[0], "summary": row[1]} for row in cursor.fetchall()]
-    conn.close()
+    debates = get_stored_debates()
     return {"debates": debates}
+
+@app.get("/analyze-debates/")
+def analyze_debates():
+    get_debate_summaries()
+    return {"status": "ok"}
 
 
 @app.get("/fetch")
-def fetch_and_store(query: str = "crypto"):
-    tweets = fetch_tweets(query)
-    store_tweets(tweets)
-    return {"message": f"Tweets for query: '{query}' fetched and stored"}
+def fetch_and_store():
+    initial_tweets = fetch_tweets()
+    related_conversations = fetch_related_conversations()
+    return {
+        "initial_tweets": initial_tweets,
+        "related_conversations": related_conversations,
+    }
 
 
 @app.get("/tweets")
@@ -91,6 +73,12 @@ def get_tweets():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/test")
+def test():
+    tweets = fetch_tweets()
+    return tweets
 
 
 if __name__ == "__main__":

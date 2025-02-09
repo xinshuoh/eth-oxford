@@ -3,3 +3,4 @@ uvicorn
 vaderSentiment
 networkx
 python-dotenv
+mistralai
